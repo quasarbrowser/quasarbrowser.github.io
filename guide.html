@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quasar Browser Guide and FAQ - Install, Setup, Troubleshooting</title>
+    <meta name="description" content="Quasar Browser setup guide and FAQ: how to install, enable Void Mode, set the home page, use Void Search and Void Mail, update, uninstall and stay private.">
+    <link rel="canonical" href="https://quasarbrowser.github.io/guide.html">
+    <link rel="icon" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Quasar Browser Guide and FAQ - Install, Setup, Troubleshooting">
+    <meta property="og:description" content="Step-by-step setup guide and frequently asked questions about the Quasar Browser.">
+    <meta property="og:image" content="https://quasarbrowser.github.io/logo.png">
+    <meta property="og:url" content="https://quasarbrowser.github.io/guide.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quasar Browser Guide and FAQ - Install, Setup, Troubleshooting">
+    <meta name="author" content="Quasar Team">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: {
+                            bg: '#06070D', surface: '#0E1119', surface2: '#131A2A',
+                            border: '#1E2436', text: '#EAEAF2', muted: '#8A92A6',
+                            accent: '#8B5CF6', accent2: '#2DD4BF', ok: '#34D399',
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void-bg text-void-text font-sans overflow-x-hidden">
+
+    <canvas id="stars" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+    <div class="ambient-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg transition-transform group-hover:scale-110">
+                    <span class="text-lg sm:text-xl font-bold tracking-widest gradient-text">QUASAR</span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html#features" class="nav-link">Features</a>
+                    <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+                    <a href="void.html" class="nav-link">Void Mode</a>
+                    <a href="guide.html" class="nav-link">Guide</a>
+                    <a href="download.html" class="cta-btn">Download</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-void-muted hover:text-void-text transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-4 pb-6 pt-2 space-y-3">
+                <a href="index.html#features" class="mobile-nav-link">Features</a>
+                <a href="index.html#how-it-works" class="mobile-nav-link">How It Works</a>
+                <a href="void.html" class="mobile-nav-link">Void Mode</a>
+                <a href="guide.html" class="mobile-nav-link">Guide</a>
+                <a href="download.html" class="block text-center cta-btn mt-4">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="relative pt-36 pb-14 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="section-tag fade-in-up">Guide &amp; FAQ</span>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-wide mt-5 mb-5 fade-in-up gradient-text" style="--delay: 0.1s">
+                Get the Most Out of Quasar
+            </h1>
+            <p class="text-void-muted max-w-2xl mx-auto leading-relaxed fade-in-up" style="--delay: 0.2s">
+                Install it, set it up, and go fully private in minutes. Answers to the questions
+                people ask most, all in one place.
+            </p>
+        </div>
+    </section>
+
+    <!-- Quickstart -->
+    <section class="relative py-8 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl sm:text-3xl font-bold fade-in-up">Quickstart</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 fade-in-up" style="--delay: 0.1s">
+                <div class="hop-card">
+                    <div class="hop-number text-void-accent">STEP 1</div>
+                    <h3 class="font-bold mb-2">Download &amp; install</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">Grab the installer from the <a href="download.html" class="text-void-accent hover:underline">download page</a> and run it. There is no signup - Quasar works immediately.</p>
+                </div>
+                <div class="hop-card">
+                    <div class="hop-number text-void-accent">STEP 2</div>
+                    <h3 class="font-bold mb-2">Set your home page</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">Open Settings and add your favorite shortcuts. Quasar's start page keeps them private, on your device.</p>
+                </div>
+                <div class="hop-card">
+                    <div class="hop-number text-void-accent">STEP 3</div>
+                    <h3 class="font-bold mb-2">Enable Void Mode when it matters</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">Turn on Void Mode from the toolbar for fully anonymous browsing through four encrypted hops. Fast by default, anonymous on demand.</p>
+                </div>
+                <div class="hop-card">
+                    <div class="hop-number text-void-accent">STEP 4</div>
+                    <h3 class="font-bold mb-2">Check Void Mail</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">Your encrypted inbox lives inside the browser. No separate app, no third-party mail server profiles.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="relative py-16 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="section-tag fade-in-up">FAQ</span>
+                <h2 class="text-3xl sm:text-4xl font-bold mt-4 fade-in-up" style="--delay: 0.1s">
+                    Frequently Asked <span class="gradient-text">Questions</span>
+                </h2>
+            </div>
+
+            <div class="space-y-3 fade-in-up" style="--delay: 0.2s">
+
+                <details class="faq-item">
+                    <summary>Is Quasar Browser really free?</summary>
+                    <p>Yes. Quasar is completely free to download and use. There are no paid tiers, no pro features locked away, and no account is required just to browse.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Which operating systems are supported?</summary>
+                    <p>Currently Windows 10 and Windows 11 (64-bit). A portable ZIP build lets you run Quasar from a USB drive without installing anything.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Does Quasar collect any data about me?</summary>
+                    <p>No telemetry, no analytics SDK, no crash reporter phoning home. Your history stays in your profile on your device. Nothing about what you read or watch is ever uploaded.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What exactly is Void Mode?</summary>
+                    <p>Void Mode routes a request through four encrypted hops - Lobby, corepoint, Escape and Void4. Your identity is replaced with an alias at the first hop, and only the final exit hop touches the actual website. See the full <a href="void.html" class="text-void-accent hover:underline">Void Mode guide</a>.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How do I set or change my home page shortcuts?</summary>
+                    <p>Open Quasar's Settings dialog, find the Home Page section, and add or remove shortcuts. They are stored locally in the browser profile.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can I still use my normal bookmarks and favorites?</summary>
+                    <p>Yes, Quasar has a built-in favorites manager. Import and export are available from the favorites panel.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How do I update Quasar?</summary>
+                    <p>Download the newest installer from the download page and run it over your current install. Your profile, shortcuts and favorites are preserved.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How do I uninstall Quasar?</summary>
+                    <p>Use Windows Settings &gt; Apps &gt; Quasar Browser &gt; Uninstall. For the portable ZIP build, just delete the folder. Nothing is left behind.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What are Vault Sites?</summary>
+                    <p>Vault Sites are websites you host directly from a local vault folder, served to the browser over the custom <span class="font-mono text-void-accent2">void://</span> protocol. There is no web host and no server log in between.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Something is broken. Where do I report it?</summary>
+                    <p>Check the project's public source repository for an issues section and report the problem there. Screenshots and steps to reproduce are always welcome.</p>
+                </details>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="relative py-12 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="download-card fade-in-up">
+                <h2 class="text-2xl sm:text-3xl font-bold mb-3">Ready to browse privately?</h2>
+                <p class="text-void-muted text-sm sm:text-base mb-6">Free forever. No signup. No telemetry.</p>
+                <a href="download.html" class="cta-btn-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Download Quasar Free
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative border-t border-void-border py-12 px-4 mt-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 rounded-lg">
+                    <span class="text-sm font-bold tracking-widest gradient-text">QUASAR</span>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-void-muted">
+                    <a href="index.html" class="hover:text-void-text transition-colors">Home</a>
+                    <a href="features.html" class="hover:text-void-text transition-colors">Features</a>
+                    <a href="void.html" class="hover:text-void-text transition-colors">Void Mode</a>
+                    <a href="guide.html" class="hover:text-void-text transition-colors">Guide</a>
+                    <a href="download.html" class="hover:text-void-text transition-colors">Download</a>
+                </div>
+                <div class="text-xs text-void-muted/60">
+                    &copy; Quasar Browser. Your browser, your rules. No telemetry, no signup.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

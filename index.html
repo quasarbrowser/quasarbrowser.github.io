@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quasar Browser - Your Browser, Your Rules</title>
+    <meta name="description" content="Quasar is a privacy-focused web browser for Windows with a built-in ad blocker, anti-fingerprinting, ghost networking and optional Void Mode - four encrypted hops of anonymous browsing. Free download, no telemetry, no signup.">
+    <link rel="canonical" href="https://quasarbrowser.github.io/">
+    <link rel="icon" href="favicon.ico">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Quasar Browser - Your Browser, Your Rules">
+    <meta property="og:description" content="Private web browser for Windows. Built-in ad blocker, anti-fingerprinting, ghost networking and Void Mode. Free download, no telemetry, no signup.">
+    <meta property="og:image" content="https://quasarbrowser.github.io/logo.png">
+    <meta property="og:url" content="https://quasarbrowser.github.io/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quasar Browser - Your Browser, Your Rules">
+    <meta name="twitter:description" content="Private web browser for Windows with built-in ad blocker and Void Mode. Free download.">
+    <meta name="twitter:image" content="https://quasarbrowser.github.io/logo.png">
+    <meta name="author" content="Quasar Team">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: {
+                            bg: '#06070D',
+                            surface: '#0E1119',
+                            surface2: '#131A2A',
+                            border: '#1E2436',
+                            text: '#EAEAF2',
+                            muted: '#8A92A6',
+                            accent: '#8B5CF6',
+                            accent2: '#2DD4BF',
+                            ok: '#34D399',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Quasar Browser",
+      "operatingSystem": "Windows 10, Windows 11",
+      "applicationCategory": "BrowserApplication",
+      "description": "Privacy-focused web browser for Windows with a built-in ad blocker, anti-fingerprinting, ghost networking and optional Void Mode anonymous browsing.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+</head>
+<body class="bg-void-bg text-void-text font-sans overflow-x-hidden">
+
+    <!-- Starfield Canvas -->
+    <canvas id="stars" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+    <!-- Ambient Glow -->
+    <div class="ambient-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg transition-transform group-hover:scale-110">
+                    <span class="text-lg sm:text-xl font-bold tracking-widest gradient-text">QUASAR</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="#security" class="nav-link">Security</a>
+                    <a href="void.html" class="nav-link">Void Mode</a>
+                    <a href="guide.html" class="nav-link">Guide</a>
+                    <a href="download.html" class="cta-btn">Download</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-void-muted hover:text-void-text transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-4 pb-6 pt-2 space-y-3">
+                <a href="#features" class="mobile-nav-link">Features</a>
+                <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
+                <a href="#security" class="mobile-nav-link">Security</a>
+                <a href="void.html" class="mobile-nav-link">Void Mode</a>
+                <a href="guide.html" class="mobile-nav-link">Guide</a>
+                <a href="download.html" class="block text-center cta-btn mt-4">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 px-4">
+        <div class="text-center max-w-4xl mx-auto relative z-10">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-void-surface border border-void-border mb-8 fade-in-up" style="--delay: 0.1s">
+                <span class="w-2 h-2 rounded-full bg-void-ok animate-pulse"></span>
+                <span class="text-xs font-medium text-void-muted tracking-wide uppercase">Privacy-First Browser</span>
+            </div>
+
+            <!-- Logo Image -->
+            <div class="mb-6 fade-in-up" style="--delay: 0.2s">
+                <img src="logo.png" alt="Quasar Logo" class="w-24 h-24 sm:w-32 sm:h-32 mx-auto glow-pulse rounded-2xl">
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-[0.2em] mb-4 fade-in-up gradient-text logo-glow" style="--delay: 0.3s">
+                QUASAR
+            </h1>
+
+            <!-- Tagline -->
+            <p class="text-lg sm:text-xl text-void-muted font-light tracking-wide mb-2 fade-in-up" style="--delay: 0.4s">
+                Your Browser, Your Rules
+            </p>
+
+            <!-- Subtitle -->
+            <p class="text-sm sm:text-base text-void-muted/70 max-w-2xl mx-auto mb-10 leading-relaxed fade-in-up" style="--delay: 0.5s">
+                A privacy-focused browser built to combat third-party tracking, oppose fingerprinting, and keep your digital life truly yours.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 fade-in-up" style="--delay: 0.6s">
+                <a href="#download" class="cta-btn-lg group">
+                    <svg class="w-5 h-5 transition-transform group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Download Quasar
+                </a>
+                <a href="#features" class="ghost-btn group">
+                    Explore Features
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Void Mode Teaser -->
+            <div class="mt-16 fade-in-up" style="--delay: 0.8s">
+                <a href="void.html" class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-void-surface/80 border border-void-border transition-colors hover:border-void-accent">
+                    <span class="flex items-center gap-2 text-xs text-void-muted">
+                        <svg class="w-4 h-4 text-void-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        Void Mode
+                    </span>
+                    <span class="w-px h-4 bg-void-border"></span>
+                    <span class="text-xs text-void-muted">Lobby &rarr; corepoint &rarr; Escape &rarr; Void4 &rarr; website</span>
+                    <span class="text-void-border">&rarr;</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 fade-in-up" style="--delay: 1s">
+            <div class="scroll-indicator">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="relative py-24 sm:py-32 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 sm:mb-20">
+                <span class="section-tag fade-in-up">Core Features</span>
+                <h2 class="text-3xl sm:text-5xl font-bold mt-4 mb-6 fade-in-up" style="--delay: 0.1s">
+                    Built for <span class="gradient-text">Privacy</span>
+                </h2>
+                <p class="text-void-muted max-w-2xl mx-auto text-sm sm:text-base leading-relaxed fade-in-up" style="--delay: 0.2s">
+                    Every feature is designed with one goal: keep your browsing private, secure, and free from surveillance.
+                </p>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Feature 1: Privacy-Focused -->
+                <div class="feature-card fade-in-up" style="--delay: 0.1s">
+                    <div class="feature-icon bg-void-accent/10 text-void-accent">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Privacy-Focused Browser</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Quasar is built from the ground up with privacy as its core principle. No telemetry, no data collection, no compromises. Your browsing history stays on your device - nowhere else.
+                    </p>
+                </div>
+
+                <!-- Feature 2: Combats Third-Party Tracking -->
+                <div class="feature-card fade-in-up" style="--delay: 0.2s">
+                    <div class="feature-icon bg-void-accent2/10 text-void-accent2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Combats Third-Party Tracking</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Built-in ad blocker and tracker blocker stop third-party cookies, pixels, and scripts from following you across the web. Every request is analyzed - suspicious trackers are killed before they load.
+                    </p>
+                </div>
+
+                <!-- Feature 3: Opposes Fingerprinting -->
+                <div class="feature-card fade-in-up" style="--delay: 0.3s">
+                    <div class="feature-icon bg-pink-500/10 text-pink-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Opposes Fingerprinting</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Browser fingerprinting tracks you by your unique device characteristics. Quasar randomizes and masks fingerprint data - canvas, WebGL, fonts, screen resolution - making you blend in with millions of others.
+                    </p>
+                </div>
+
+                <!-- Feature 4: Void Mode Encryption -->
+                <div class="feature-card fade-in-up" style="--delay: 0.4s">
+                    <div class="feature-icon bg-purple-500/10 text-purple-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Void Mode Encryption</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Every request wrapped through four encrypted hops. Your identity is replaced with an alias at Lobby. The destination stays sealed until Void4. Uploads always ask your permission first.
+                    </p>
+                </div>
+
+                <!-- Feature 5: Built-in Ad Blocker -->
+                <div class="feature-card fade-in-up" style="--delay: 0.5s">
+                    <div class="feature-icon bg-amber-500/10 text-amber-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Built-in Ad Blocker</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        No extensions needed. Quasar ships with a powerful ad blocker that removes banners, pop-ups, and malicious ads - making pages load faster and keeping you safe from malvertising.
+                    </p>
+                </div>
+
+                <!-- Feature 6: Ghost Networking -->
+                <div class="feature-card fade-in-up" style="--delay: 0.6s">
+                    <div class="feature-icon bg-teal-500/10 text-teal-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Ghost Networking</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Route traffic through peer relays so websites see the exit node's IP - not yours. Chain multiple hops for VPN-style anonymity without trusting any central service.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="relative py-24 sm:py-32 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 sm:mb-20">
+                <span class="section-tag fade-in-up">How It Works</span>
+                <h2 class="text-3xl sm:text-5xl font-bold mt-4 mb-6 fade-in-up" style="--delay: 0.1s">
+                    The <span class="gradient-text">Void</span> Pipeline
+                </h2>
+                <p class="text-void-muted max-w-2xl mx-auto text-sm sm:text-base leading-relaxed fade-in-up" style="--delay: 0.2s">
+                    When Void Mode is enabled, your traffic passes through four encrypted layers - each one sealed, each one anonymous.
+                </p>
+            </div>
+
+            <!-- Pipeline Steps -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+
+                <!-- Hop 1: Lobby -->
+                <div class="hop-card fade-in-up" style="--delay: 0.1s">
+                    <div class="hop-number">01</div>
+                    <h3 class="text-lg font-bold text-void-accent mb-2">Lobby</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Your first point of contact. Lobby assigns you a random alias - your real IP is never revealed to the network.
+                    </p>
+                    <div class="hop-tag">Identity Masked</div>
+                </div>
+
+                <!-- Hop 2: corepoint -->
+                <div class="hop-card fade-in-up" style="--delay: 0.2s">
+                    <div class="hop-number">02</div>
+                    <h3 class="text-lg font-bold text-purple-400 mb-2">corepoint</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        The encrypted relay layer. Traffic is re-wrapped here - even corepoint cannot see where it originated or where it's headed.
+                    </p>
+                    <div class="hop-tag">Sealed Relay</div>
+                </div>
+
+                <!-- Hop 3: Escape -->
+                <div class="hop-card fade-in-up" style="--delay: 0.3s">
+                    <div class="hop-number">03</div>
+                    <h3 class="text-lg font-bold text-pink-400 mb-2">Escape</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        The second relay carries sealed bundles it cannot open. Adds another layer of separation between you and the destination.
+                    </p>
+                    <div class="hop-tag">Tamper-Proof</div>
+                </div>
+
+                <!-- Hop 4: Void4 -->
+                <div class="hop-card fade-in-up" style="--delay: 0.4s">
+                    <div class="hop-number">04</div>
+                    <h3 class="text-lg font-bold text-void-accent2 mb-2">Void4</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        The final hop. Only Void4 decrypts and touches the actual website. It sees the site - but never your identity.
+                    </p>
+                    <div class="hop-tag">Final Exit</div>
+                </div>
+            </div>
+
+            <!-- Pipeline Visualization -->
+            <div class="fade-in-up" style="--delay: 0.5s">
+                <div class="pipeline-visual">
+                    <div class="pipeline-label">Your Request</div>
+                    <div class="pipeline-line">
+                        <div class="pipeline-node lobby">Lobby</div>
+                        <div class="pipeline-arrow">&rarr;</div>
+                        <div class="pipeline-node corepoint">corepoint</div>
+                        <div class="pipeline-arrow">&rarr;</div>
+                        <div class="pipeline-node escape">Escape</div>
+                        <div class="pipeline-arrow">&rarr;</div>
+                        <div class="pipeline-node void4">Void4</div>
+                        <div class="pipeline-arrow">&rarr;</div>
+                        <div class="pipeline-node website">Website</div>
+                    </div>
+                    <div class="pipeline-label text-void-ok">Sealed End-to-End</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="relative py-24 sm:py-32 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 sm:mb-20">
+                <span class="section-tag fade-in-up">Security</span>
+                <h2 class="text-3xl sm:text-5xl font-bold mt-4 mb-6 fade-in-up" style="--delay: 0.1s">
+                    Protection <span class="gradient-text">Layers</span>
+                </h2>
+                <p class="text-void-muted max-w-2xl mx-auto text-sm sm:text-base leading-relaxed fade-in-up" style="--delay: 0.2s">
+                    Quasar defends you on multiple fronts. Every layer is designed to keep your browsing invisible.
+                </p>
+            </div>
+
+            <!-- Security Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Protection Card 1 -->
+                <div class="security-card fade-in-up" style="--delay: 0.1s">
+                    <div class="flex items-start gap-4">
+                        <div class="security-icon bg-void-accent/10 text-void-accent">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold mb-1">Anti-Tracking Engine</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">
+                                Real-time analysis of every network request. Third-party trackers, fingerprinting scripts, and tracking cookies are identified and blocked before they execute.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Protection Card 2 -->
+                <div class="security-card fade-in-up" style="--delay: 0.2s">
+                    <div class="flex items-start gap-4">
+                        <div class="security-icon bg-void-accent2/10 text-void-accent2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold mb-1">Encrypted Void Pipes</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">
+                                Every layer uses AEAM-style encryption - replay-proof, tamper-proof, key-separated per hop. No single node can decrypt the full path.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Protection Card 3 -->
+                <div class="security-card fade-in-up" style="--delay: 0.3s">
+                    <div class="flex items-start gap-4">
+                        <div class="security-icon bg-pink-500/10 text-pink-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold mb-1">Fingerprint Randomization</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">
+                                Canvas, WebGL, audio context, fonts, and screen properties are randomized per session. Websites see a generic profile - not the real you.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Protection Card 4 -->
+                <div class="security-card fade-in-up" style="--delay: 0.4s">
+                    <div class="flex items-start gap-4">
+                        <div class="security-icon bg-amber-500/10 text-amber-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold mb-1">No Telemetry</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">
+                                Zero data collection. No phone-home, no usage statistics, no crash reports sent to external servers. What you browse is known only to you.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="relative py-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="stats-grid">
+                <div class="stat-item fade-in-up" style="--delay: 0.1s">
+                    <div class="stat-number gradient-text">4</div>
+                    <div class="stat-label">Encrypted Hops</div>
+                </div>
+                <div class="stat-item fade-in-up" style="--delay: 0.2s">
+                    <div class="stat-number gradient-text">0</div>
+                    <div class="stat-label">Data Collected</div>
+                </div>
+                <div class="stat-item fade-in-up" style="--delay: 0.3s">
+                    <div class="stat-number gradient-text">100%</div>
+                    <div class="stat-label">Fingerprint Masked</div>
+                </div>
+                <div class="stat-item fade-in-up" style="--delay: 0.4s">
+                    <div class="stat-number gradient-text">&infin;</div>
+                    <div class="stat-label">Your Freedom</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="relative py-24 sm:py-32 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="download-card fade-in-up">
+                <img src="logo.png" alt="Quasar" class="w-16 h-16 mx-auto mb-6 rounded-xl">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                    Download <span class="gradient-text">Quasar</span>
+                </h2>
+                <p class="text-void-muted max-w-xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
+                    Take control of your privacy. Download Quasar Browser and experience the web the way it should be - free, private, and encrypted.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="download.html" class="cta-btn-lg group">
+                        <svg class="w-5 h-5 transition-transform group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Download for Windows
+                    </a>
+                    <div class="text-void-muted text-xs">
+                        Free &bull; No signup required
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative border-t border-void-border py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 rounded-lg">
+                    <span class="text-sm font-bold tracking-widest gradient-text">QUASAR</span>
+                </div>
+
+                <!-- Links -->
+                <div class="flex items-center gap-6 text-sm text-void-muted">
+                    <a href="index.html" class="hover:text-void-text transition-colors">Home</a>
+                    <a href="features.html" class="hover:text-void-text transition-colors">Features</a>
+                    <a href="#how-it-works" class="hover:text-void-text transition-colors">How It Works</a>
+                    <a href="#security" class="hover:text-void-text transition-colors">Security</a>
+                    <a href="void.html" class="hover:text-void-text transition-colors">Void Mode</a>
+                    <a href="guide.html" class="hover:text-void-text transition-colors">Guide</a>
+                    <a href="download.html" class="hover:text-void-text transition-colors">Download</a>
+                </div>
+
+                <!-- Copyright -->
+                <div class="text-xs text-void-muted/60">
+                    &copy; Quasar Browser. Your browser, your rules.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

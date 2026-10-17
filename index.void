@@ -1,0 +1,10 @@
+    <title>Quasar Browser - Your Browser, Your Rules</title> # recommend & requirement #
+    <void name="banner" content="void.png"> # recommend & optional # 468x60pixel #
+    <void name="description" content="Quasar is a privacy-first browser that blocks third-party trackers and ads, defeats fingerprinting, and routes every request through four encrypted hops - Lobby, corepoint, Escape and Void4. No telemetry, no data collection, no account."> # recommend & requirement #
+    <void name="keywords" content="Quasar Browser, privacy browser, ad blocker, tracker blocker, anti-fingerprinting, anonymous browsing, Void Mode, encrypted browsing, ghost networking, no telemetry"> # recommend & requirement #
+    <void name="author" content="Quasar Browser"> # recommend & optional #
+    <void property="void:type" content="website"> # recommend & requirement #
+    <void property="void:title" content="Quasar Browser - Private Browsing with Void Mode"> # recommend & requirement #
+    <void property="void:description" content="Block trackers, defeat fingerprinting and browse through four sealed hops. Your Browser, Your Rules."> # recommend & requirement #
+    <void property="void:image" content="void.png"> # recommend & requirement #
+    <void protocole="Quasar Browser" content="QB">

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quasar Browser Features - Ad Blocker, Anti-Fingerprinting, Void Mail</title>
+    <meta name="description" content="Every Quasar Browser feature explained: built-in ad blocker, tracker protection, anti-fingerprinting, ghost networking, Void Mail, Void Search, Vault Sites and zero telemetry.">
+    <link rel="canonical" href="https://quasarbrowser.github.io/features.html">
+    <link rel="icon" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Quasar Browser Features - Ad Blocker, Anti-Fingerprinting, Void Mail">
+    <meta property="og:description" content="Built-in ad blocker, anti-fingerprinting, ghost networking, Void Mail, Void Search and Vault Sites - all in one private browser with zero telemetry.">
+    <meta property="og:image" content="https://quasarbrowser.github.io/logo.png">
+    <meta property="og:url" content="https://quasarbrowser.github.io/features.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quasar Browser Features - Ad Blocker, Anti-Fingerprinting, Void Mail">
+    <meta name="twitter:description" content="Every Quasar Browser feature explained, from ad blocking to Void Mode anonymity.">
+    <meta name="author" content="Quasar Team">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: {
+                            bg: '#06070D', surface: '#0E1119', surface2: '#131A2A',
+                            border: '#1E2436', text: '#EAEAF2', muted: '#8A92A6',
+                            accent: '#8B5CF6', accent2: '#2DD4BF', ok: '#34D399',
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void-bg text-void-text font-sans overflow-x-hidden">
+
+    <canvas id="stars" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+    <div class="ambient-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg transition-transform group-hover:scale-110">
+                    <span class="text-lg sm:text-xl font-bold tracking-widest gradient-text">QUASAR</span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html#features" class="nav-link">Features</a>
+                    <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+                    <a href="void.html" class="nav-link">Void Mode</a>
+                    <a href="guide.html" class="nav-link">Guide</a>
+                    <a href="download.html" class="cta-btn">Download</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-void-muted hover:text-void-text transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-4 pb-6 pt-2 space-y-3">
+                <a href="index.html#features" class="mobile-nav-link">Features</a>
+                <a href="index.html#how-it-works" class="mobile-nav-link">How It Works</a>
+                <a href="void.html" class="mobile-nav-link">Void Mode</a>
+                <a href="guide.html" class="mobile-nav-link">Guide</a>
+                <a href="download.html" class="block text-center cta-btn mt-4">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="relative pt-36 pb-14 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="section-tag fade-in-up">Feature Tour</span>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-wide mt-5 mb-5 fade-in-up gradient-text" style="--delay: 0.1s">
+                Built for Privacy. Built for You.
+            </h1>
+            <p class="text-void-muted max-w-2xl mx-auto leading-relaxed fade-in-up" style="--delay: 0.2s">
+                Quasar is not a browser with privacy bolted on. Every engine inside it - from the
+                ad blocker to the network layer - exists to put you back in control of your data.
+            </p>
+        </div>
+    </section>
+
+    <!-- Feature list -->
+    <section class="relative py-10 px-4">
+        <div class="max-w-5xl mx-auto space-y-20">
+
+            <!-- Ad Blocker -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-in-up">
+                <div>
+                    <span class="section-tag">Ad Blocker</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-4 mb-3">Built-in Ad Blocker</h2>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Quasar ships with its own ad blocking engine - no extensions needed. Banners,
+                        pop-ups, video pre-rolls and malicious ads are removed before they ever render,
+                        so pages load faster, use less data and expose you to far less malvertising.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon bg-void-accent/10 text-void-accent">&#128274;</div>
+                    <h3 class="font-bold mb-2">What gets blocked</h3>
+                    <ul class="text-sm text-void-muted space-y-2">
+                        <li>&bull; Third-party tracking cookies and pixels</li>
+                        <li>&bull; Banner and pop-up ad networks</li>
+                        <li>&bull; Cryptominers hidden in pages</li>
+                        <li>&bull; Known malware and phishing domains</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Anti-fingerprinting -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-in-up">
+                <div class="feature-card order-2 md:order-1">
+                    <div class="feature-icon bg-void-accent2/10 text-void-accent2">&#128374;</div>
+                    <h3 class="font-bold mb-2">What is fingerprinting?</h3>
+                    <p class="text-sm text-void-muted leading-relaxed">
+                        Sites combine your canvas, WebGL, fonts, screen size and timezone into a
+                        unique "fingerprint" that survives cookie deletion. Quasar randomizes these
+                        signals per session so you look like millions of other users, not the one they are hunting.
+                    </p>
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="section-tag">Anti-Fingerprinting</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-4 mb-3">Opposes Browser Fingerprinting</h2>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Canvas, WebGL, audio context, installed fonts and window dimensions are
+                        masked and randomized every session. Tracking networks that profile you
+                        silently get a generic, unstable target instead.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Ghost networking -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-in-up">
+                <div>
+                    <span class="section-tag">Networking</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-4 mb-3">Ghost Networking</h2>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Route traffic through peer relays so websites only ever see the exit node's
+                        IP address. Chain multiple hops for VPN-style anonymity without trusting any
+                        single central service.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon bg-teal-500/10 text-teal-400">&#127759;</div>
+                    <ul class="text-sm text-void-muted space-y-2">
+                        <li>&bull; Peer relays, no central VPN to trust</li>
+                        <li>&bull; Exit node IP shown to sites - never yours</li>
+                        <li>&bull; Chain multiple hops for extra layers</li>
+                        <li>&bull; Per-session identity aliases</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Void search + mail -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-in-up">
+                <div class="feature-card order-2 md:order-1">
+                    <div class="feature-icon bg-purple-500/10 text-purple-400">&#9993;</div>
+                    <h3 class="font-bold mb-2">Private by default</h3>
+                    <p class="text-sm text-void-muted leading-relaxed">
+                        Void Mail uses an encrypted inbox built into the browser - no third-party
+                        mail server peeking at your subject lines. Void Search is the default
+                        private search inside the browser, with results served without a tracking profile.
+                    </p>
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="section-tag">Search + Mail</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-4 mb-3">Void Search &amp; Void Mail</h2>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        A private search engine and an encrypted mail inbox live directly inside the
+                        browser. No extension, no separate app, no telemetry between the two.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Vault sites + homepage -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-in-up">
+                <div>
+                    <span class="section-tag">Local Hosting</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-4 mb-3">Vault Sites</h2>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Publish and browse entire websites that live inside your own vault folder -
+                        served straight to the browser with a custom <span class="font-mono text-void-accent2">void://</span> address.
+                        No web host, no server logs, no third party between you and the content.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon bg-pink-500/10 text-pink-400">&#127968;</div>
+                    <ul class="text-sm text-void-muted space-y-2">
+                        <li>&bull; Sites hosted from your local vault</li>
+                        <li>&bull; <span class="font-mono">void://</span> custom protocol addressing</li>
+                        <li>&bull; No server, no external logs</li>
+                        <li>&bull; Custom splash &amp; start-page shortcuts</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- No telemetry -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-in-up">
+                <div class="feature-card order-2 md:order-1">
+                    <div class="feature-icon bg-amber-500/10 text-amber-400">&#128737;</div>
+                    <h3 class="font-bold mb-2">What we never do</h3>
+                    <ul class="text-sm text-void-muted space-y-2">
+                        <li>&bull; No phone-home or usage statistics</li>
+                        <li>&bull; No crash reports to external servers</li>
+                        <li>&bull; No selling or sharing of browsing data</li>
+                        <li>&bull; No account or signup required to browse</li>
+                    </ul>
+                </div>
+                <div class="order-1 md:order-2">
+                    <span class="section-tag">Trust</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-4 mb-3">Zero Telemetry</h2>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        There is no analytics SDK, no crash reporter phoning home, and no data about
+                        what you read or watch. Your browsing history stays on your device - nowhere else.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="text-center pt-8 fade-in-up">
+                <a href="download.html" class="cta-btn-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    Download Quasar Free
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative border-t border-void-border py-12 px-4 mt-16">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 rounded-lg">
+                    <span class="text-sm font-bold tracking-widest gradient-text">QUASAR</span>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-void-muted">
+                    <a href="index.html" class="hover:text-void-text transition-colors">Home</a>
+                    <a href="features.html" class="hover:text-void-text transition-colors">Features</a>
+                    <a href="void.html" class="hover:text-void-text transition-colors">Void Mode</a>
+                    <a href="guide.html" class="hover:text-void-text transition-colors">Guide</a>
+                    <a href="download.html" class="hover:text-void-text transition-colors">Download</a>
+                </div>
+                <div class="text-xs text-void-muted/60">
+                    &copy; Quasar Browser. Your browser, your rules. No telemetry, no signup.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

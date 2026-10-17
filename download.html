@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Quasar Browser for Windows - Free and Private</title>
+    <meta name="description" content="Download Quasar Browser for Windows free. Installer and portable payload, no signup required. Built-in ad blocker, anti-fingerprinting, no telemetry and Void Mode.">
+    <link rel="canonical" href="https://quasarbrowser.github.io/download.html">
+    <link rel="icon" href="logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Download Quasar Browser for Windows - Free and Private">
+    <meta property="og:description" content="Free and private browser for Windows with a built-in ad blocker, anti-fingerprinting and Void Mode. No signup required.">
+    <meta property="og:image" content="https://quasarbrowser.github.io/logo.png">
+    <meta property="og:url" content="https://quasarbrowser.github.io/download.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Download Quasar Browser for Windows - Free and Private">
+    <meta name="twitter:description" content="Free and private browser for Windows with a built-in ad blocker, anti-fingerprinting and Void Mode. No signup required.">
+    <meta name="twitter:image" content="https://quasarbrowser.github.io/logo.png">
+    <meta name="author" content="Quasar Team">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: {
+                            bg: '#06070D', surface: '#0E1119', surface2: '#131A2A',
+                            border: '#1E2436', text: '#EAEAF2', muted: '#8A92A6',
+                            accent: '#8B5CF6', accent2: '#2DD4BF', ok: '#34D399',
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-void-bg text-void-text font-sans overflow-x-hidden">
+
+    <canvas id="stars" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+    <div class="ambient-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg transition-transform group-hover:scale-110">
+                    <span class="text-lg sm:text-xl font-bold tracking-widest gradient-text">QUASAR</span>
+                </a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="index.html#features" class="nav-link">Features</a>
+                    <a href="index.html#how-it-works" class="nav-link">How It Works</a>
+                    <a href="void.html" class="nav-link">Void Mode</a>
+                    <a href="guide.html" class="nav-link">Guide</a>
+                    <a href="download.html" class="cta-btn">Download</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-void-muted hover:text-void-text transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-4 pb-6 pt-2 space-y-3">
+                <a href="index.html#features" class="mobile-nav-link">Features</a>
+                <a href="index.html#how-it-works" class="mobile-nav-link">How It Works</a>
+                <a href="void.html" class="mobile-nav-link">Void Mode</a>
+                <a href="guide.html" class="mobile-nav-link">Guide</a>
+                <a href="download.html" class="block text-center cta-btn mt-4">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="relative pt-36 pb-16 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="section-tag fade-in-up">Free Download</span>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-wide mt-5 mb-5 fade-in-up gradient-text" style="--delay: 0.1s">
+                Download Quasar Browser
+            </h1>
+            <p class="text-void-muted max-w-2xl mx-auto leading-relaxed fade-in-up" style="--delay: 0.2s">
+                A private web browser for Windows. Built-in ad blocking, fingerprint masking,
+                zero telemetry and optional Void Mode with four encrypted hops. Completely free -
+                no signup, no account, no data collection.
+            </p>
+        </div>
+    </section>
+
+    <!-- Downloads -->
+    <section class="relative py-8 px-4">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Installer -->
+            <div class="feature-card fade-in-up" style="--delay: 0.1s">
+                <div class="feature-icon bg-void-accent/10 text-void-accent">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h2 class="text-lg font-bold mb-2">Windows Installer</h2>
+                <p class="text-void-muted text-sm leading-relaxed mb-4">
+                    Recommended. Installs Quasar with Start Menu and desktop shortcuts,
+                    registers the <span class="text-void-accent2 font-mono">void://</span> protocol and keeps itself up to date.
+                </p>
+                <div id="installer-card" class="mb-4">
+                    <a id="installer-link" href="https://github.com/quasarbrowser/quasarbrowser.github.io/releases/latest/download/Quasar%20Browser%20Setup.exe" class="cta-btn-lg w-full justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        <span class="btn-label">Download Installer</span>
+                    </a>
+                </div>
+                <div class="text-xs text-void-muted space-y-1">
+                    <div><span class="font-mono">version</span> <span id="release-version">latest</span> &bull; <span class="font-mono">windows</span> 10 / 11 (64-bit) &bull; <span class="font-mono">size</span> 461 MB</div>
+                    <div id="installer-meta"><span class="font-mono">info</span> checking GitHub release...</div>
+                </div>
+            </div>
+
+            <!-- Portable (.void payload) -->
+            <div class="feature-card fade-in-up" style="--delay: 0.2s">
+                <div class="feature-icon bg-void-accent2/10 text-void-accent2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                    </svg>
+                </div>
+                <h2 class="text-lg font-bold mb-2">Portable Payload</h2>
+                <p class="text-void-muted text-sm leading-relaxed mb-4">
+                    No installation. Download <span class="font-mono text-void-accent2">Quasar Browser.void</span>,
+                    rename it to <span class="font-mono text-void-accent2">.zip</span>, unzip and run
+                    <span class="font-mono">Quasar\Quasar.exe</span> - from a USB drive if you like.
+                    Uninstall by deleting the folder.
+                </p>
+                <div class="mb-4">
+                    <a id="void-link" href="https://github.com/quasarbrowser/quasarbrowser.github.io/releases/latest/download/Quasar%20Browser.void" class="ghost-btn w-full justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        <span class="btn-label">Download Portable</span>
+                    </a>
+                </div>
+                <div class="text-xs text-void-muted space-y-1">
+                    <div><span class="font-mono">windows</span> 10 / 11 (64-bit) &bull; <span class="font-mono">usb</span> ready</div>
+                    <div id="void-meta"><span class="font-mono">info</span> checking GitHub release...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full package (both assets in one zip) -->
+        <div class="max-w-5xl mx-auto mt-6">
+            <div class="download-card flex flex-col sm:flex-row items-center justify-between gap-4 fade-in-up" style="--delay: 0.3s">
+                <div class="text-sm">
+                    <div class="font-bold">Full package <span class="font-mono text-void-accent2">Quasar Browser.zip</span></div>
+                    <div class="text-void-muted text-xs mt-1">Installer + portable payload together (919 MB) - both files above in a single download.</div>
+                </div>
+                <a id="package-link" href="https://archive.org/download/quasar-browser/Quasar%20Browser%20.zip" class="ghost-btn shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                    <span class="btn-label">Download Full Package</span>
+                </a>
+            </div>
+            <div id="package-meta" class="text-xs text-void-muted mt-2 text-center sm:text-right"><span class="font-mono">info</span> Quasar Browser.zip - 919 MB - via archive.org</div>
+        </div>
+    </section>
+
+    <!-- Requirements -->
+    <section class="relative py-8 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center fade-in-up">System Requirements</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 fade-in-up" style="--delay: 0.1s">
+                <div class="download-card !py-6 text-center">
+                    <div class="stat-label">OS</div>
+                    <div class="font-bold mt-1">Windows 10 / 11</div>
+                    <div class="text-xs text-void-muted">64-bit, no admin rights needed</div>
+                </div>
+                <div class="download-card !py-6 text-center">
+                    <div class="stat-label">RAM</div>
+                    <div class="font-bold mt-1">4 GB</div>
+                    <div class="text-xs text-void-muted">8 GB recommended (idle use: ~500 MB)</div>
+                </div>
+                <div class="download-card !py-6 text-center">
+                    <div class="stat-label">Disk</div>
+                    <div class="font-bold mt-1">1.5 GB</div>
+                    <div class="text-xs text-void-muted">883 MB install + ~204 MB while running</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Install Steps -->
+    <section class="relative py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="section-tag fade-in-up">Quickstart</span>
+                <h2 class="text-3xl sm:text-4xl font-bold mt-4 fade-in-up" style="--delay: 0.1s">
+                    Install in <span class="gradient-text">Four Steps</span>
+                </h2>
+            </div>
+            <div class="space-y-4 fade-in-up" style="--delay: 0.2s">
+                <div class="hop-card">
+                    <div class="flex items-start gap-4">
+                        <div class="hop-number !mb-0 text-void-accent">01</div>
+                        <div>
+                            <h3 class="font-bold mb-1">Download the installer</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">Click Download Installer. The file is about 461 MB - the complete browser bundle, so give the first download a minute. Hosted on GitHub Releases.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hop-card">
+                    <div class="flex items-start gap-4">
+                        <div class="hop-number !mb-0 text-void-accent">02</div>
+                        <div>
+                            <h3 class="font-bold mb-1">Run Quasar Browser Setup.exe</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">SmartScreen may say "Windows protected your PC" (the app is not code-signed yet) - choose More info, then Run anyway. No administrator rights are required.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hop-card">
+                    <div class="flex items-start gap-4">
+                        <div class="hop-number !mb-0 text-void-accent">03</div>
+                        <div>
+                            <h3 class="font-bold mb-1">Launch Quasar</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">Open Quasar from the Start Menu or desktop. The first launch takes about 30 seconds while local data is prepared - later starts are quick.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hop-card">
+                    <div class="flex items-start gap-4">
+                        <div class="hop-number !mb-0 text-void-accent">04</div>
+                        <div>
+                            <h3 class="font-bold mb-1">Turn on Void Mode (optional)</h3>
+                            <p class="text-void-muted text-sm leading-relaxed">Open Void Mode from the toolbar for fully anonymous, four-hop browsing. It is off by default so normal browsing stays fast.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verify / Checksums -->
+    <section class="relative py-16 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="download-card fade-in-up">
+                <div class="text-center mb-6">
+                    <span class="section-tag">Verify Integrity</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-4">Check the Checksum</h2>
+                    <p class="text-void-muted text-sm mt-3 max-w-xl mx-auto leading-relaxed">
+                        After the file lands in your downloads folder, verify it with PowerShell:
+                        <span class="block font-mono text-xs text-void-accent2 mt-3 p-3 bg-void-bg border border-void-border rounded-lg">Get-FileHash ".\Quasar Browser Setup.exe" -Algorithm SHA256</span>
+                    </p>
+                </div>
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-left text-void-muted text-xs uppercase tracking-wider border-b border-void-border">
+                            <th class="py-2">File</th>
+                            <th class="py-2">SHA-256</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-void-border">
+                            <td class="py-3 font-mono text-void-accent2">Quasar Browser Setup.exe</td>
+                            <td class="py-3 font-mono text-xs break-all text-void-muted">794e5fa96878bfe85dd9784f1f8f7409aa4e177fe44abba91e7816f3c482a563</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 font-mono text-void-accent2">Quasar Browser.void</td>
+                            <td class="py-3 font-mono text-xs break-all text-void-muted">54dcf0bae6ce25e6b54994527c0d4ae3a2dce33e1204e4dc378c49e531451651</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-xs text-void-muted/70 text-center mt-4">Hashes shown for the latest published release - always cross-check against the release page.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative border-t border-void-border py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 rounded-lg">
+                    <span class="text-sm font-bold tracking-widest gradient-text">QUASAR</span>
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-void-muted">
+                    <a href="index.html" class="hover:text-void-text transition-colors">Home</a>
+                    <a href="features.html" class="hover:text-void-text transition-colors">Features</a>
+                    <a href="void.html" class="hover:text-void-text transition-colors">Void Mode</a>
+                    <a href="guide.html" class="hover:text-void-text transition-colors">Guide</a>
+                    <a href="download.html" class="hover:text-void-text transition-colors">Download</a>
+                </div>
+                <div class="text-xs text-void-muted/60">
+                    &copy; Quasar Browser. Your browser, your rules. No telemetry, no signup.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

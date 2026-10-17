@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Void Mode - Complete Guide | Quasar Browser</title>
+    <meta name="description" content="How Quasar's Void Mode works: the Lobby, corepoint, Escape and Void4 hops, what is inside it, and how developers publish a site to Void Search with an index.void file.">
+    <link rel="icon" href="void.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="void.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: {
+                            bg: '#06070D',
+                            surface: '#0E1119',
+                            surface2: '#131A2A',
+                            border: '#1E2436',
+                            text: '#EAEAF2',
+                            muted: '#8A92A6',
+                            accent: '#8B5CF6',
+                            accent2: '#2DD4BF',
+                            ok: '#34D399',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        #read-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            z-index: 60;
+            background: linear-gradient(90deg, #7C3AED, #2DD4BF);
+        }
+        .code-body { font-family: 'JetBrains Mono', Consolas, monospace; }
+    </style>
+</head>
+<body class="bg-void-bg text-void-text font-sans overflow-x-hidden">
+
+    <div id="read-progress"></div>
+
+    <!-- Starfield Canvas -->
+    <canvas id="stars" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+
+    <!-- Ambient Glow -->
+    <div class="ambient-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg transition-transform group-hover:scale-110">
+                    <span class="text-lg sm:text-xl font-bold tracking-widest gradient-text">QUASAR</span>
+                </a>
+
+                <div class="hidden lg:flex items-center gap-7">
+                    <a href="#overview" class="nav-link">Overview</a>
+                    <a href="#pipeline" class="nav-link">Pipeline</a>
+                    <a href="#inside" class="nav-link">Inside</a>
+                    <a href="#privacy" class="nav-link">Privacy</a>
+                    <a href="#developers" class="nav-link">Developers</a>
+                    <a href="#faq" class="nav-link">FAQ</a>
+                    <a href="index.html" class="cta-btn">Home</a>
+                </div>
+
+                <button id="mobile-menu-btn" class="lg:hidden text-void-muted hover:text-void-text transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="lg:hidden hidden">
+            <div class="px-4 pb-6 pt-2 space-y-3">
+                <a href="#overview" class="mobile-nav-link">Overview</a>
+                <a href="#pipeline" class="mobile-nav-link">Pipeline</a>
+                <a href="#inside" class="mobile-nav-link">Inside</a>
+                <a href="#privacy" class="mobile-nav-link">Privacy</a>
+                <a href="#developers" class="mobile-nav-link">Developers</a>
+                <a href="#faq" class="mobile-nav-link">FAQ</a>
+                <a href="index.html" class="block text-center cta-btn mt-4">Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="relative doc-hero px-4">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="fade-in-up" style="--delay: .05s">
+                <span class="doc-eyebrow">
+                    <span class="w-2 h-2 rounded-full bg-void-ok animate-pulse"></span>
+                    Void Mode &mdash; v4 Pipeline
+                </span>
+            </div>
+
+            <h1 class="doc-title gradient-text logo-glow mt-8 mb-5 fade-in-up" style="--delay: .15s">
+                VOID
+            </h1>
+
+            <p class="text-lg sm:text-2xl text-void-text font-light tracking-wide mb-3 fade-in-up" style="--delay: .25s">
+                Everything about the mode that makes you invisible
+            </p>
+
+            <p class="text-sm sm:text-base text-void-muted/70 max-w-2xl mx-auto mb-9 leading-relaxed fade-in-up" style="--delay: .35s">
+                A full breakdown of how Quasar routes, seals and strips every request &mdash; what each of the
+                four hops can and cannot see, what modules run inside the browser, and exactly what developers
+                must ship to appear in Void Search.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 fade-in-up" style="--delay: .45s">
+                <a href="#pipeline" class="cta-btn-lg group">
+                    Trace the pipeline
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m0 0l-5-5m5 5l5-5"/>
+                    </svg>
+                </a>
+                <a href="#developers" class="ghost-btn group">
+                    For developers
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l-4-4m0 0l4-4m-4 4h16m0-8l4 4m0 0l-4 4m4-4H8"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="mt-14 fade-in-up" style="--delay: .6s">
+                <div class="chip-row justify-center">
+                    <span class="chip"><span class="n">01</span> Lobby</span>
+                    <span class="chip"><span class="n">02</span> corepoint</span>
+                    <span class="chip"><span class="n">03</span> Escape</span>
+                    <span class="chip"><span class="n">04</span> Void4</span>
+                    <span class="chip"><span class="n">&rarr;</span> Website</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview -->
+    <section id="overview" class="relative py-20 sm:py-24 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-14">
+                <span class="section-tag fade-in-up">Overview</span>
+                <h2 class="doc-h2 mt-4 mb-5 fade-in-up" style="--delay: .1s">
+                    What is <span class="gradient-text">Void Mode</span>?
+                </h2>
+                <p class="doc-lede mx-auto fade-in-up" style="--delay: .2s">
+                    Void Mode is Quasar's on/off switch for anonymous routing. When it is active, nothing
+                    travels to a website directly &mdash; every request is wrapped, handed to four separate
+                    relays, unwrapped only at the very end, and thrown away afterwards.
+                </p>
+            </div>
+
+            <div class="split">
+                <div class="fade-in-up" style="--delay: .25s">
+                    <div class="def-list">
+                        <div class="def-row">
+                            <div class="def-k">Purpose</div>
+                            <div class="def-v"><strong>Hide the person, keep the content.</strong> The website still works &mdash; images, video, forms, downloads &mdash; but it never learns who asked.</div>
+                        </div>
+                        <div class="def-row">
+                            <div class="def-k">Layers</div>
+                            <div class="def-v"><strong>Four encrypted hops</strong> (Lobby &rarr; corepoint &rarr; Escape &rarr; Void4) with a per-hop key, so no single relay holds the full path.</div>
+                        </div>
+                        <div class="def-row">
+                            <div class="def-k">Identity</div>
+                            <div class="def-v"><strong>An ephemeral alias</strong> replaces your IP at hop one. It is random, single-use, and dies with the request.</div>
+                        </div>
+                        <div class="def-row">
+                            <div class="def-k">Fingerprint</div>
+                            <div class="def-v"><strong>Randomised per session.</strong> Canvas, WebGL, audio, fonts and screen metrics are masked before any page script runs.</div>
+                        </div>
+                        <div class="def-row">
+                            <div class="def-k">Tracking</div>
+                            <div class="def-v"><strong>Stripped in transit.</strong> Ad, tracker and fingerprint requests are dropped by the built-in engine, not by an extension.</div>
+                        </div>
+                        <div class="def-row">
+                            <div class="def-k">Storage</div>
+                            <div class="def-v"><strong>Nothing to leak.</strong> No telemetry, no usage stats, no crash reports leaving the device.</div>
+                        </div>
+                        <div class="def-row">
+                            <div class="def-k">Uploads</div>
+                            <div class="def-v"><strong>Always confirmed.</strong> File uploads, forms and clipboard reads ask you first, even inside a void session.</div>
+                        </div>
+                    </div>
+
+                    <div class="callout mt-8">
+                        <svg class="ic w-5 h-5 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H8a1 1 0 01-1-1v-4a1 1 0 011-1h1m4-1h5a1 1 0 011 1v4a1 1 0 01-1 1h-1m-6-1h6"/>
+                        </svg>
+                        <div>
+                            <b>Plain English:</b> think of Void Mode as a chain of four locked rooms.
+                            Each room can open the parcel it just received and put it in a new locked box for
+                            the next room &mdash; but no room can look inside the box it is about to hand over.
+                            That is why no single relay can sell your identity or your destination.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fade-in-up" style="--delay: .3s">
+                    <div class="vis-grid">
+                        <div class="vis-cell shown">
+                            <h4>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                The website sees
+                            </h4>
+                            <div class="vis-item"><span class="dot"></span>Void4's exit IP, never yours</div>
+                            <div class="vis-item"><span class="dot"></span>A generic, randomised device profile</div>
+                            <div class="vis-item"><span class="dot"></span>The page content you asked for</div>
+                            <div class="vis-item"><span class="dot"></span>Your cookies &mdash; but only inside the session</div>
+                            <div class="vis-item"><span class="dot"></span>Nothing about you personally</div>
+                        </div>
+                        <div class="vis-cell hidden">
+                            <h4>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806"/>
+                                </svg>
+                                What stays sealed
+                            </h4>
+                            <div class="vis-item"><span class="dot"></span>Your real IP address</div>
+                            <div class="vis-item"><span class="dot"></span>Your name, account, email</div>
+                            <div class="vis-item"><span class="dot"></span>Your full browsing history</div>
+                            <div class="vis-item"><span class="dot"></span>Ad &amp; tracker profiles</div>
+                            <div class="vis-item"><span class="dot"></span>Your uploads, until you approve them</div>
+                        </div>
+                    </div>
+
+                    <div class="panel mt-6">
+                        <div class="text-[10px] font-bold tracking-[2px] uppercase text-void-muted mb-4">Void session lifecycle</div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-void-accent2">Mint</span>
+                            <span class="text-void-border">&rarr;</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-void-accent2">Seal</span>
+                            <span class="text-void-border">&rarr;</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-void-accent2">Relay</span>
+                            <span class="text-void-border">&rarr;</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-void-accent2">Unwrap</span>
+                            <span class="text-void-border">&rarr;</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-void-ok">Discard</span>
+                        </div>
+                        <p class="text-void-muted text-xs leading-relaxed mt-5">
+                            The alias, the keys and the relay state are destroyed when the request completes.
+                            There is no log to subpoena and no history to correlate &mdash; the packet simply stops existing.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline -->
+    <section id="pipeline" class="relative py-20 sm:py-24 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-14">
+                <span class="section-tag fade-in-up">How It Works</span>
+                <h2 class="doc-h2 mt-4 mb-5 fade-in-up" style="--delay: .1s">
+                    The four <span class="gradient-text">sealed hops</span>
+                </h2>
+                <p class="doc-lede mx-auto fade-in-up" style="--delay: .2s">
+                    Each hop only ever holds one key. A relay can open the layer addressed to it and re-seal
+                    for the next hop &mdash; it can never read the whole route. That separation is the entire trick.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Hop 1 -->
+                <div class="hop-detail h1 fade-in-up" style="--delay: .1s">
+                    <div class="hop-detail-head">
+                        <span class="hop-chip">HOP 01</span>
+                        <h3 class="text-xl font-bold text-void-accent">Lobby</h3>
+                        <span class="hop-tag" style="margin-top:0">Identity Masked</span>
+                    </div>
+                    <p class="text-void-muted text-sm leading-relaxed mt-4">
+                        The first door. Lobby terminates your connection, discards your real IP, and mints a random
+                        <strong class="text-void-text">alias</strong> for this one request. Your connection is then re-encrypted
+                        with the hop-1 key and pushed to the next relay. Lobby knows a request exists; it does not know
+                        where it came from and cannot read where it is going.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap no"><span class="mk">&times;</span> Your real IP</div>
+                            <div class="cap no"><span class="mk">&times;</span> Your destination</div>
+                            <div class="cap no"><span class="mk">&times;</span> Your page content</div>
+                        </div>
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap yes"><span class="mk">&#10003;</span> Mints the alias</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Wraps layer 1</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Forwards to corepoint</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hop 2 -->
+                <div class="hop-detail h2 fade-in-up" style="--delay: .15s">
+                    <div class="hop-detail-head">
+                        <span class="hop-chip">HOP 02</span>
+                        <h3 class="text-xl font-bold text-purple-400">corepoint</h3>
+                        <span class="hop-tag" style="margin-top:0">Sealed Relay</span>
+                    </div>
+                    <p class="text-void-muted text-sm leading-relaxed mt-4">
+                        The encryption layer of the chain. corepoint opens layer 1, performs the integrity check, and
+                        re-seals the payload with the hop-2 key before handing it to Escape. Because the alias replaced
+                        your address at Lobby, corepoint has nothing to log &mdash; it literally cannot see the origin.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap no"><span class="mk">&times;</span> The original source</div>
+                            <div class="cap no"><span class="mk">&times;</span> The final destination</div>
+                            <div class="cap no"><span class="mk">&times;</span> Layer 2 onward</div>
+                        </div>
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap yes"><span class="mk">&#10003;</span> Opens layer 1</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Verifies integrity</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Wraps layer 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hop 3 -->
+                <div class="hop-detail h3 fade-in-up" style="--delay: .2s">
+                    <div class="hop-detail-head">
+                        <span class="hop-chip">HOP 03</span>
+                        <h3 class="text-xl font-bold text-pink-400">Escape</h3>
+                        <span class="hop-tag" style="margin-top:0">Tamper-Proof</span>
+                    </div>
+                    <p class="text-void-muted text-sm leading-relaxed mt-4">
+                        The separation layer. Escape carries a bundle it is deliberately unable to open, running a
+                        tamper check on the wrapper only. If a single bit was altered in transit, the packet dies here
+                        instead of reaching the website. It then re-seals with the hop-3 key for the final hop.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap no"><span class="mk">&times;</span> The payload it carries</div>
+                            <div class="cap no"><span class="mk">&times;</span> Who is behind the alias</div>
+                            <div class="cap no"><span class="mk">&times;</span> Anything after Void4</div>
+                        </div>
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap yes"><span class="mk">&#10003;</span> Tamper verification</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Replay rejection</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Wraps layer 3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hop 4 -->
+                <div class="hop-detail h4 fade-in-up" style="--delay: .25s">
+                    <div class="hop-detail-head">
+                        <span class="hop-chip">HOP 04</span>
+                        <h3 class="text-xl font-bold text-void-accent2">Void4</h3>
+                        <span class="hop-tag" style="margin-top:0">Final Exit</span>
+                    </div>
+                    <p class="text-void-muted text-sm leading-relaxed mt-4">
+                        The only relay that touches the real website. Void4 verifies the signature chain, unwraps
+                        the last layer and makes the outbound request from its own IP. The website therefore sees
+                        Void4 &mdash; and Void4 sees only the address you asked for, never the person who asked.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap no"><span class="mk">&times;</span> Your identity</div>
+                            <div class="cap no"><span class="mk">&times;</span> Your alias history</div>
+                            <div class="cap no"><span class="mk">&times;</span> Anything after the website</div>
+                        </div>
+                        <div class="cap-list" style="margin-top:0">
+                            <div class="cap yes"><span class="mk">&#10003;</span> Sees the destination only</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Final unwrap</div>
+                            <div class="cap yes"><span class="mk">&#10003;</span> Signature verification</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulator -->
+            <div class="mt-10 fade-in-up" style="--delay: .3s">
+                <div class="sim">
+                    <div class="sim-head">
+                        <div>
+                            <div class="sim-title">Live trace</div>
+                            <div class="text-xs text-void-muted/70 mt-1">Watch one request cross all four hops.</div>
+                        </div>
+                        <button id="sim-run" class="sim-btn">Run packet</button>
+                    </div>
+
+                    <div class="sim-track">
+                        <div class="sim-stop">
+                            <span class="beacon"></span>
+                            <span class="label">You</span>
+                        </div>
+                        <div class="sim-stop">
+                            <span class="beacon"></span>
+                            <span class="label">Lobby</span>
+                        </div>
+                        <div class="sim-stop">
+                            <span class="beacon"></span>
+                            <span class="label">corepoint</span>
+                        </div>
+                        <div class="sim-stop">
+                            <span class="beacon"></span>
+                            <span class="label">Escape</span>
+                        </div>
+                        <div class="sim-stop">
+                            <span class="beacon"></span>
+                            <span class="label">Void4</span>
+                        </div>
+                        <div class="sim-stop">
+                            <span class="beacon"></span>
+                            <span class="label">Website</span>
+                        </div>
+                    </div>
+
+                    <div id="sim-log" class="sim-log"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inside -->
+    <section id="inside" class="relative py-20 sm:py-24 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-14">
+                <span class="section-tag fade-in-up">Inside</span>
+                <h2 class="doc-h2 mt-4 mb-5 fade-in-up" style="--delay: .1s">
+                    What is <span class="gradient-text">inside</span> the void
+                </h2>
+                <p class="doc-lede mx-auto fade-in-up" style="--delay: .2s">
+                    The pipeline is the transport. These are the modules that decide what gets sent at all,
+                    what gets stripped, and what has to ask you first. All of them are built in &mdash; no
+                    extension store, no configuration required.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div class="mod-card fade-in-up" style="--delay: .05s">
+                    <div class="mod-icon bg-void-accent/10 text-void-accent">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Ad &amp; Tracker Blocker</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Every request is inspected before it leaves. Banners, pop-ups, tracking pixels, third-party
+                        cookies and malvertising hosts are dropped at the network layer, so the script never even
+                        executes on your machine.
+                    </p>
+                    <div class="mod-meta">
+                        <span class="mod-pill">Network layer</span>
+                        <span class="mod-pill">Zero extensions</span>
+                    </div>
+                </div>
+
+                <div class="mod-card fade-in-up" style="--delay: .1s">
+                    <div class="mod-icon bg-pink-500/10 text-pink-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Fingerprint Defence</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Canvas, WebGL, audio context, font list, screen and hardware metrics are randomised per
+                        session. You are presented as one of millions of identical generic devices instead of one
+                        unique, sellable profile.
+                    </p>
+                    <div class="mod-meta">
+                        <span class="mod-pill">Per-session</span>
+                        <span class="mod-pill">Anti-correlation</span>
+                    </div>
+                </div>
+
+                <div class="mod-card fade-in-up" style="--delay: .15s">
+                    <div class="mod-icon bg-amber-500/10 text-amber-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Sealed Pipes</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Every hop uses authenticated encryption with a key derived separately for that hop.
+                        Replay is rejected, tampering is detected, and a compromised relay still cannot read the
+                        rest of the route.
+                    </p>
+                    <div class="mod-meta">
+                        <span class="mod-pill">AEAD</span>
+                        <span class="mod-pill">Per-hop keys</span>
+                    </div>
+                </div>
+
+                <div class="mod-card fade-in-up" style="--delay: .2s">
+                    <div class="mod-icon bg-teal-500/10 text-teal-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Ghost Networking</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Traffic leaves through peer relays rather than a central provider. The exit IP belongs to
+                        Void4, and the chain in between can be reshuffled per session so no single observer can
+                        build a map of your browsing.
+                    </p>
+                    <div class="mod-meta">
+                        <span class="mod-pill">Peer relays</span>
+                        <span class="mod-pill">Rotating chain</span>
+                    </div>
+                </div>
+
+                <div class="mod-card fade-in-up" style="--delay: .25s">
+                    <div class="mod-icon bg-purple-500/10 text-purple-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Upload Guard</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        Sending a file, submitting a form, granting clipboard or camera access &mdash; each one
+                        raises a permission prompt first. Void Mode never turns "I was browsing privately" into
+                        "everything I did was hidden".
+                    </p>
+                    <div class="mod-meta">
+                        <span class="mod-pill">Per-action prompt</span>
+                        <span class="mod-pill">Never silent</span>
+                    </div>
+                </div>
+
+                <div class="mod-card fade-in-up" style="--delay: .3s">
+                    <div class="mod-icon bg-void-ok/10 text-void-ok">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold mb-2">Zero Telemetry</h3>
+                    <p class="text-void-muted text-sm leading-relaxed">
+                        No phone-home, no usage analytics, no crash reports to a remote server, no A/B buckets,
+                        no "anonymous" identifier. If Quasar cannot see it, it cannot send it.
+                    </p>
+                    <div class="mod-meta">
+                        <span class="mod-pill">No phone-home</span>
+                        <span class="mod-pill">Local only</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Privacy -->
+    <section id="privacy" class="relative py-20 sm:py-24 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-14">
+                <span class="section-tag fade-in-up">Privacy</span>
+                <h2 class="doc-h2 mt-4 mb-5 fade-in-up" style="--delay: .1s">
+                    What the <span class="gradient-text">relays cannot learn</span>
+                </h2>
+                <p class="doc-lede mx-auto fade-in-up" style="--delay: .2s">
+                    Privacy here is structural, not a promise. The design makes certain facts physically
+                    unavailable at each stage &mdash; so there is nothing for a relay, an operator or a
+                    subpoena to obtain.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="panel fade-in-up" style="--delay: .1s">
+                    <h3 class="font-bold mb-3 text-void-accent">For the relays</h3>
+                    <ul class="text-void-muted text-sm leading-relaxed space-y-2">
+                        <li>&bull; No relay holds the full key chain, so none can decrypt end to end.</li>
+                        <li>&bull; Aliases are random, single-use and destroyed after the request.</li>
+                        <li>&bull; A relay that tampers with a packet kills it at the next hop.</li>
+                        <li>&bull; A replayed packet is rejected by the integrity counter.</li>
+                    </ul>
+                </div>
+                <div class="panel fade-in-up" style="--delay: .2s">
+                    <h3 class="font-bold mb-3 text-void-accent2">For websites</h3>
+                    <ul class="text-void-muted text-sm leading-relaxed space-y-2">
+                        <li>&bull; They receive Void4's IP, not yours.</li>
+                        <li>&bull; Your device profile is generic and randomised per session.</li>
+                        <li>&bull; Tracker, pixel and fingerprint scripts are dropped before they run.</li>
+                        <li>&bull; Session cookies die with the void session.</li>
+                    </ul>
+                </div>
+                <div class="panel fade-in-up" style="--delay: .3s">
+                    <h3 class="font-bold mb-3 text-pink-400">For everyone else</h3>
+                    <ul class="text-void-muted text-sm leading-relaxed space-y-2">
+                        <li>&bull; Your ISP sees an encrypted relay connection, nothing about destinations.</li>
+                        <li>&bull; Your network operator sees a rotating chain of relays.</li>
+                        <li>&bull; Quasar itself keeps no server-side record to hand over.</li>
+                        <li>&bull; There is no account, no profile and no identifier to leak.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout warn mt-8 fade-in-up" style="--delay: .35s">
+                <svg class="ic w-5 h-5 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div>
+                    <b>Honest limits.</b> Void Mode protects the transport, not what you type. Signing into an
+                    account, uploading a document or filling a form still tells that site who you are &mdash;
+                    that is why Upload Guard asks every time. And a void session cannot hide traffic that your
+                    own device generates outside the browser.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developers -->
+    <section id="developers" class="relative py-20 sm:py-24 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-14">
+                <span class="section-tag fade-in-up">Developers</span>
+                <h2 class="doc-h2 mt-4 mb-5 fade-in-up" style="--delay: .1s">
+                    Publish your site to <span class="gradient-text">Void Search</span>
+                </h2>
+                <p class="doc-lede mx-auto fade-in-up" style="--delay: .2s">
+                    Void Search is Quasar's built-in discovery engine. To appear in it you ship one small
+                    plain-text file called <code class="text-void-accent2">index.void</code> next to your
+                    <code class="text-void-accent2">index.html</code>. No SDK, no build step, no tracking.
+                </p>
+            </div>
+
+            <!-- File tree -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="panel fade-in-up" style="--delay: .1s">
+                    <h3 class="font-bold mb-4">1 &middot; Folder layout</h3>
+                    <div class="tree">
+                        <span class="dim">your-site/</span><br>
+                        &nbsp;&nbsp;<span class="hi">&rarr;</span> <span class="f">index.html</span> <span class="dim">(your page)</span><br>
+                        &nbsp;&nbsp;<span class="hi">&rarr;</span> <span class="f">index.void</span> <span class="dim">(Void Search listing)</span><br>
+                        &nbsp;&nbsp;<span class="hi">&rarr;</span> <span class="f">void.png</span> <span class="dim">(preview image)</span><br>
+                        &nbsp;&nbsp;<span class="hi">&rarr;</span> <span class="f">banner.png</span> <span class="dim">(optional, 468&times;60)</span>
+                    </div>
+                    <div class="callout mt-5">
+                        <svg class="ic w-5 h-5 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            The filename must be exactly <b>index.void</b> and it must sit in the same folder as
+                            <b>index.html</b>. Image paths are relative to that folder. One file per site &mdash;
+                            sub-pages are discovered through the same listing.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block fade-in-up" style="--delay: .15s" data-copy>
+                    <div class="code-head">
+                        <span class="code-name">index.void &mdash; Quasar Browser Website</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+<div class="code-body"><span class="tk-tag">&lt;title&gt;</span>Quasar Browser - Your Browser, Your Rules<span class="tk-tag">&lt;/title&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"banner"</span> <span class="tk-attr">content</span>=<span class="tk-str">"void.png"</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"description"</span> <span class="tk-attr">content</span>=<span class="tk-str">"A privacy-focused browser that blocks third-party tracking, resists fingerprinting, and routes every request through four encrypted hops."</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"keywords"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Quasar Browser, privacy browser, ad blocker, tracker blocker, anti-fingerprinting, Void Mode, encrypted browsing"</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"author"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Quasar Browser"</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:type"</span> <span class="tk-attr">content</span>=<span class="tk-str">"website"</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:title"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Quasar Browser - Private Browsing with Void Mode"</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:description"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Block trackers, defeat fingerprinting and browse through four sealed hops. No telemetry, no data collected."</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:image"</span> <span class="tk-attr">content</span>=<span class="tk-str">"void.png"</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">protocole</span>=<span class="tk-str">"Quasar Browser"</span> <span class="tk-attr">content</span>=<span class="tk-str">"QB"</span><span class="tk-tag">&gt;</span></div>
+                </div>
+            </div>
+
+            <!-- Tag reference -->
+            <h3 class="text-xl sm:text-2xl font-bold mb-5 fade-in-up" style="--delay: .1s">2 &middot; Tag reference</h3>
+            <div class="table-wrap fade-in-up" style="--delay: .15s">
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Attributes</th>
+                            <th>Example value</th>
+                            <th>Status</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>&lt;title&gt;</code></td>
+                            <td>text content</td>
+                            <td>Quasar Browser</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>Site name shown as the heading of your Void Search result.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void name="banner"&gt;</code></td>
+                            <td>name, content</td>
+                            <td>void.png</td>
+                            <td><span class="badge-opt">Optional</span></td>
+                            <td>Top banner image. Recommended size <b>468&times;60 px</b> so it does not get cropped.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void name="description"&gt;</code></td>
+                            <td>name, content</td>
+                            <td>Short paragraph, roughly 120&ndash;160 characters</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>The full description body of your listing.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void name="keywords"&gt;</code></td>
+                            <td>name, content</td>
+                            <td>privacy browser, ad blocker, ...</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>Comma-separated terms Void Search matches against. 4&ndash;8 strong terms work best.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void name="author"&gt;</code></td>
+                            <td>name, content</td>
+                            <td>Quasar Browser</td>
+                            <td><span class="badge-opt">Optional</span></td>
+                            <td>Publisher credit shown under the listing.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void property="void:type"&gt;</code></td>
+                            <td>property, content</td>
+                            <td>website</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>Declares the listing type to the search engine.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void property="void:title"&gt;</code></td>
+                            <td>property, content</td>
+                            <td>Quasar Browser - Private Browsing</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>Headline used in results and previews.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void property="void:description"&gt;</code></td>
+                            <td>property, content</td>
+                            <td>One-line summary</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>The short snippet shown under the headline in results.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void property="void:image"&gt;</code></td>
+                            <td>property, content</td>
+                            <td>void.png</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>Thumbnail image for the result card. Square images render best.</td>
+                        </tr>
+                        <tr>
+                            <td><code>&lt;void protocole="Quasar Browser"&gt;</code></td>
+                            <td>protocole, content</td>
+                            <td>QB</td>
+                            <td><span class="badge-req">Required</span></td>
+                            <td>Marks the site as a native Quasar Browser listing. Note the spelling: <b>protocole</b>, not <b>protocol</b>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Checklist + notes -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                <div class="panel fade-in-up" style="--delay: .1s">
+                    <h3 class="font-bold mb-4">3 &middot; Pre-publish checklist</h3>
+                    <ul class="checklist">
+                        <li><span class="box">&#10003;</span><span>File is named exactly <b>index.void</b> and sits beside <b>index.html</b>.</span></li>
+                        <li><span class="box">&#10003;</span><span>All six required tags are present and closed.</span></li>
+                        <li><span class="box">&#10003;</span><span>Image paths exist and match the real filenames, including the extension.</span></li>
+                        <li><span class="box">&#10003;</span><span>Banner, if used, is <b>468&times;60 px</b> and under ~60 KB.</span></li>
+                        <li><span class="box">&#10003;</span><span><b>keywords</b> uses comma separators and describes your site, not your brand slogan.</span></li>
+                        <li><span class="box">&#10003;</span><span>No <code>#</code> comment markers carried over from the template are left in production.</span></li>
+                        <li><span class="box">&#10003;</span><span>The final line is <b>protocole="Quasar Browser"</b> with content <b>QB</b>.</span></li>
+                    </ul>
+                </div>
+
+                <div class="panel fade-in-up" style="--delay: .2s">
+                    <h3 class="font-bold mb-4">4 &middot; How it appears in Void Search</h3>
+                    <div class="panel" style="background:#0B0E16;padding:20px">
+                        <img src="void.png" alt="Quasar Browser preview" class="w-16 h-16 rounded-xl mb-4 object-cover">
+                        <div class="text-[11px] font-bold tracking-[1.5px] uppercase text-void-accent2 mb-1.5">Quasar Browser</div>
+                        <div class="text-sm font-semibold leading-snug mb-2">Quasar Browser - Your Browser, Your Rules</div>
+                        <p class="text-xs text-void-muted leading-relaxed mb-3">
+                            A privacy-focused browser built to combat third-party tracking, oppose fingerprinting,
+                            and keep your digital life truly yours.
+                        </p>
+                        <div class="text-[10px] text-void-ok font-mono">quasar://site &mdash; Void native &middot; QB</div>
+                    </div>
+                    <p class="text-void-muted text-xs leading-relaxed mt-5">
+                        This card is assembled entirely from <b>index.void</b>: the image from
+                        <b>void:image</b>, the headline from <b>void:title</b>, the paragraph from
+                        <b>description</b>, and the QB badge from the <b>protocole</b> line. Clicking it opens
+                        your <b>index.html</b> in a fresh void session &mdash; the listing never loads trackers
+                        to display itself.
+                    </p>
+                </div>
+            </div>
+
+            <!-- What not to do -->
+            <div class="callout warn mt-6 fade-in-up" style="--delay: .25s">
+                <svg class="ic w-5 h-5 flex-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l-4-4m0 0l4-4m-4 4h16M8 8l4-4m-4 0l4 4m0 0l-4 4"/>
+                </svg>
+                <div>
+                    <b>Starter template &mdash; copy this if you are unsure.</b> Everything marked
+                    <i>require</i> must be replaced with your own values; everything marked <i>optional</i> can
+                    stay out. A second <b>index.void</b> placed anywhere else on your host will be ignored by the
+                    crawler, so keep exactly one per site root.
+                </div>
+            </div>
+
+            <div class="code-block mt-6 fade-in-up" style="--delay: .3s" data-copy>
+                <div class="code-head">
+                    <span class="code-name">index.void &mdash; minimal template</span>
+                    <button class="copy-btn">Copy</button>
+                </div>
+<div class="code-body">    <span class="tk-tag">&lt;title&gt;</span>Website Name<span class="tk-tag">&lt;/title&gt;</span> <span class="tk-cmt"># recommend &amp; requirement #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"banner"</span> <span class="tk-attr">content</span>=<span class="tk-str">"banner-image.png"</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># optional, 468x60 pixel #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"description"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Short description"</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># recommend &amp; requirement #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"keywords"</span> <span class="tk-attr">content</span>=<span class="tk-str">"keyword 1, keyword 2, keyword 3, keyword 4"</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># recommend &amp; requirement #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">name</span>=<span class="tk-str">"author"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Author name"</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># optional #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:type"</span> <span class="tk-attr">content</span>=<span class="tk-str">"website"</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># recommend &amp; requirement #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:title"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Website name - Best Platform for Solutions"</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># recommend &amp; requirement #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:description"</span> <span class="tk-attr">content</span>=<span class="tk-str">"Short description."</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># recommend &amp; requirement #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">property</span>=<span class="tk-str">"void:image"</span> <span class="tk-attr">content</span>=<span class="tk-str">"preview-image.png"</span><span class="tk-tag">&gt;</span> <span class="tk-cmt"># recommend &amp; requirement #</span>
+    <span class="tk-tag">&lt;void</span> <span class="tk-attr">protocole</span>=<span class="tk-str">"Quasar Browser"</span> <span class="tk-attr">content</span>=<span class="tk-str">"QB"</span><span class="tk-tag">&gt;</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="relative py-20 sm:py-24 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="section-tag fade-in-up">FAQ</span>
+                <h2 class="doc-h2 mt-4 mb-5 fade-in-up" style="--delay: .1s">Common <span class="gradient-text">questions</span></h2>
+            </div>
+
+            <div class="fade-in-up" style="--delay: .15s">
+                <div class="faq-item">
+                    <button class="faq-q">
+                        Is Void Mode on by default?
+                        <svg class="chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-a"><div class="faq-a-inner">
+                        Void Mode is a per-session switch, not a permanent setting. You decide per window whether
+                        a session is sealed. Blocking of ads, trackers and fingerprinting is always active,
+                        because it never conflicts with what you asked the page to do.
+                    </div></div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-q">
+                        Does Void Mode make me completely anonymous?
+                        <svg class="chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-a"><div class="faq-a-inner">
+                        It removes the network trail &mdash; the part that is usually easiest to collect and
+                        hardest to undo. Anything you actively disclose is still disclosed: logging in, sending a
+                        form or uploading a file tells that site who you are. Void Mode protects the transport and
+                        makes disclosure a deliberate act.
+                    </div></div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-q">
+                        Why is it spelled <code>protocole</code> instead of <code>protocol</code>?
+                        <svg class="chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-a"><div class="faq-a-inner">
+                        Because that is the exact attribute name the Void crawler parses. Use
+                        <code>protocole="Quasar Browser" content="QB"</code> verbatim. If the crawler does not
+                        find that line, the page still opens in Quasar but it is listed as a normal web page with
+                        no native badge and no Void Search optimisation.
+                    </div></div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-q">
+                        Does <code>index.void</code> affect my ranking in normal search engines?
+                        <svg class="chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-a"><div class="faq-a-inner">
+                        No. It is a Quasar-specific file and is ignored everywhere else. Keep your normal
+                        <code>&lt;title&gt;</code>, meta description and Open Graph tags in <code>index.html</code>
+                        for other crawlers. The two systems are independent.
+                    </div></div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-q">
+                        Can I add comments to my <code>index.void</code>?
+                        <svg class="chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-a"><div class="faq-a-inner">
+                        While you are drafting, yes &mdash; <code>#</code> comments are supported and are how the
+                        starter template annotates each field. Strip them before you deploy, because a comment that
+                        swallows a required line will silently drop that field from your listing.
+                    </div></div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-q">
+                        How long until my site shows up in Void Search?
+                        <svg class="chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-a"><div class="faq-a-inner">
+                        The crawl happens on the next pass after the file is reachable at your site root, so
+                        treat it as near-instant but not guaranteed. Confirm locally by loading
+                        <code>index.void</code> directly in the address bar &mdash; if you get your own text back,
+                        the crawler will too.
+                    </div></div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-q">
+                        What image should I use for <code>void:image</code>?
+                        <svg class="chev" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="faq-a"><div class="faq-a-inner">
+                        A square image of at least 256&times;256 px, saved as PNG. This page uses
+                        <code>void.png</code> for both the listing thumbnail and the demo card. If you also set a
+                        banner, keep it a wide strip of <code>468&times;60 px</code>.
+                    </div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download CTA -->
+    <section class="relative py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="download-card fade-in-up">
+                <img src="logo.png" alt="Quasar" class="w-16 h-16 mx-auto mb-6 rounded-xl">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+                    Ready to go <span class="gradient-text">Void</span>?
+                </h2>
+                <p class="text-void-muted max-w-xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
+                    Download Quasar Browser and run every request through four sealed hops &mdash;
+                    with no account, no telemetry and nothing left behind.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="index.html" class="cta-btn-lg group">
+                        <svg class="w-5 h-5 transition-transform group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Download Quasar
+                    </a>
+                    <a href="#developers" class="ghost-btn group">
+                        Read the dev guide
+                        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative border-t border-void-border py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="Quasar" class="w-8 h-8 rounded-lg">
+                    <span class="text-sm font-bold tracking-widest gradient-text">QUASAR</span>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-void-muted">
+                    <a href="#overview" class="hover:text-void-text transition-colors">Overview</a>
+                    <a href="#pipeline" class="hover:text-void-text transition-colors">Pipeline</a>
+                    <a href="#developers" class="hover:text-void-text transition-colors">Developers</a>
+                    <a href="index.html" class="hover:text-void-text transition-colors">Home</a>
+                </div>
+
+                <div class="text-xs text-void-muted/60">
+                    &copy; Quasar Browser. Your browser, your rules.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="void.js"></script>
+</body>
+</html>
